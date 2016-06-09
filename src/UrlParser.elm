@@ -268,8 +268,16 @@ oneOfHelp choices chunks formatter =
         Err _ ->
           oneOfHelp otherParsers chunks formatter
 
-        Ok answerPair ->
-          Ok answerPair
+        Ok (chunks', result) ->
+          case chunks'.rest of
+            [] ->
+              Ok (chunks', result)
+
+            [""] ->
+              Ok (chunks', result)
+
+            _ ->
+              oneOfHelp otherParsers chunks formatter
 
 
 {-| Customize an existing parser. Perhaps you want a parser that matches any
